@@ -10,10 +10,10 @@
 
 {% block content %}
 
+<form action="">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
 
-    <form action="">
 
       <h1 class="govuk-heading-l">
         {{ name|capitalize }}
@@ -107,12 +107,6 @@
 
      {% endfor %}
 
-      {{ govukButton({
-        'text': 'Update'
-      })}}
-
-     </form>
-
     </div>
     <div class="govuk-grid-column-one-half preview">
       <div class="inner">
@@ -172,8 +166,16 @@
         {% elseif name == "warningText" %}
           {{  govukWarningText(data) }}
         {% endif %} 
+
+        {{ govukButton({
+          text: 'Update',
+          classes: 'govuk-!-margin-top-5 govuk-!-margin-bottom-0'
+        })}}
+        
       </div>
     </div>
   </div>
+
+</form>
 
 {% endblock %}
