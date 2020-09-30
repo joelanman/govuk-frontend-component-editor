@@ -1,0 +1,179 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Question page
+{% endblock %}
+
+{% block beforeContent %}
+  <a class="govuk-back-link" href="/url/of/previous/page">Back</a>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+
+    <form action="">
+
+      <h1 class="govuk-heading-l">
+        {{ name|capitalize }}
+      </h1>
+
+     {% for option in options %}
+
+      <div>
+          {% if option.type == "string" %}
+            {{ govukInput({
+              label:{
+                text: option.name
+              },
+              name: option.name,
+              id: option.name,
+              value: data[option.name]
+            }) }}
+          {% elseif option.type == "boolean" %}
+  
+            {{ govukRadios({
+              classes: "govuk-radios--inline",
+              idPrefix: option.name,
+              name: option.name,
+              fieldset: {
+                legend: {
+                  text: option.name
+                }
+              },
+              items: [
+                {
+                  value: "true",
+                  text: "On",
+                  checked: checked(option.name, "true")
+                },
+                {
+                  value: "",
+                  text: "Off",
+                  checked: checked(option.name, "")
+                }
+              ]
+            }) }}
+          {% elseif option.type == "object" and option.isComponent != true %}
+
+            <div class="govuk-inset-text">
+              <h2 class="govuk-heading-s">
+                {{option.name}}
+              </h2>
+                {% for param in option.params %}
+                  {% if param.type == "string" %}
+                    {{ govukInput({
+                      label:{
+                        text: param.name
+                      },
+                      name: param.name,
+                      id: param.name,
+                      value: data[param.name]
+                    }) }}
+                  {% elseif param.type == "boolean" %}
+          
+                    {{ govukRadios({
+                      classes: "govuk-radios--inline",
+                      idPrefix: param.name,
+                      name: param.name,
+                      fieldset: {
+                        legend: {
+                          text: param.name
+                        }
+                      },
+                      items: [
+                        {
+                          value: "true",
+                          text: "On",
+                          checked: checked(param.name, "true")
+                        },
+                        {
+                          value: "",
+                          text: "Off",
+                          checked: checked(param.name, "")
+                        }
+                      ]
+                    }) }}
+                  {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+          {% endif %}
+        </span>
+      </div>
+
+     {% endfor %}
+
+      {{ govukButton({
+        'text': 'Update'
+      })}}
+
+     </form>
+
+    </div>
+    <div class="govuk-grid-column-one-half preview">
+      <div class="inner">
+        
+        <h2 class="govuk-heading-m">
+          Preview
+        </h2>
+
+        {% if name == "accordion" %}
+          {{ govukAccordion(data) }}
+        {% elseif name == "backLink" %}
+          {{ govukBackLink(data) }}
+        {% elseif name == "breadcrumbs" %}
+          {{ govukBreadcrumbs(data) }}
+        {% elseif name == "button" %}
+          {{ govukButton(data) }}
+        {% elseif name == "characterCount" %}
+          {{ govukCharacterCount(data) }}
+        {% elseif name == "checkboxes" %}
+          {{ govukCheckboxes(data) }}
+        {% elseif name == "dateInput" %}
+          {{ govukDateInput(data) }}
+        {% elseif name == "details" %}
+          {{ govukDetails(data) }}
+        {% elseif name == "errorMessage" %}
+          {{ govukErrorMessage(data) }}
+        {% elseif name == "errorSummary" %}
+          {{ govukErrorSummary(data) }}
+        {% elseif name == "fieldset" %}
+          {{ govukFieldset(data) }}
+        {% elseif name == "fileUpload" %}
+          {{ govukFileUpload(data) }}
+        {% elseif name == "input" %}
+          {{ govukInput(data) }}
+        {% elseif name == "insetText" %}
+          {{ govukInsetText(data) }}
+        {% elseif name == "panel" %}
+          {{ govukPanel(data) }}
+        {% elseif name == "phaseBanner" %}
+          {{ govukPhaseBanner(data) }}
+        {% elseif name == "radios" %}
+          {{ govukRadios(data) }}
+        {% elseif name == "select" %}
+          {{ govukSelect(data) }}
+        {% elseif name == "skipLink" %}
+          {{ govukSkipLink(data) }}
+        {% elseif name == "summaryList" %}
+          {{ govukSummaryList(data) }}
+        {% elseif name == "table" %}
+          {{ govukTable(data) }}
+        {% elseif name == "tabs" %}
+          {{ govukTabs(data) }}
+        {% elseif name == "tag" %}
+          {{ govukTag(data) }}
+        {% elseif name == "textarea" %}
+          {{ govukTextarea(data) }}
+        {% elseif name == "warningText" %}
+          {{  govukWarningText(data) }}
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

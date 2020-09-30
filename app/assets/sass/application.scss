@@ -18,3 +18,12 @@ $govuk-assets-path: '/govuk/assets/';
 @import "components/cookie-banner";
 
 // Add extra styles here, or re-organise the Sass files in whichever way makes most sense to you
+
+.preview{
+    position: sticky;
+    top: 20px;
+    .inner{
+        border: 5px solid govuk-colour("mid-grey");
+        padding: 20px;
+    }
+}
