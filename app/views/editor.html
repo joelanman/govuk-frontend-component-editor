@@ -67,16 +67,16 @@
                       label:{
                         text: param.name
                       },
-                      name: option.name + '.' + param.name,
+                      name: option.name + '[' + param.name +']',
                       id: param.name,
-                      value: data[option.name + '.' + param.name]
+                      value: data[option.name][param.name]
                     }) }}
                   {% elseif param.type == "boolean" %}
           
                     {{ govukRadios({
                       classes: "govuk-radios--inline",
-                      idPrefix: option.name + '.' + param.name,
-                      name: option.name + '.' + param.name,
+                      idPrefix: option.name + '[' + param.name +']',
+                      name: option.name + '[' + param.name +']',
                       fieldset: {
                         legend: {
                           text: param.name
@@ -86,12 +86,12 @@
                         {
                           value: "true",
                           text: "On",
-                          checked: checked(option.name + '.' + param.name, "true")
+                          checked: checked(option.name + '[' + param.name +']', "true")
                         },
                         {
                           value: "",
                           text: "Off",
-                          checked: checked(option.name + '.' + param.name, "")
+                          checked: checked(option.name + '[' + param.name +']', "")
                         }
                       ]
                     }) }}
