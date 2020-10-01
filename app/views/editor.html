@@ -55,6 +55,7 @@
                 }
               ]
             }) }}
+
           {% elseif option.type == "object" and option.isComponent != true %}
 
             <div class="govuk-inset-text">
@@ -98,6 +99,55 @@
                   {% endif %}
 
                 {% endfor %}
+
+            </div>
+
+          {% elseif option.type == "array" %}
+
+            <div class="govuk-inset-text">
+              <h2 class="govuk-heading-s">
+                {{option.name}}
+              </h2>
+                {% for param in option.params %}
+                  {% if param.type == "string" %}
+                    {{ govukInput({
+                      label:{
+                        text: param.name
+                      },
+                      name: option.name + '[][' + param.name +']',
+                      id: param.name,
+                      value: data[option.name][param.name]
+                    }) }}
+                  {% elseif param.type == "boolean" %}
+          
+                    {{ govukRadios({
+                      classes: "govuk-radios--inline",
+                      idPrefix: option.name + '[' + param.name +']',
+                      name: option.name + '[' + param.name +']',
+                      fieldset: {
+                        legend: {
+                          text: param.name
+                        }
+                      },
+                      items: [
+                        {
+                          value: "true",
+                          text: "On"
+                        },
+                        {
+                          value: "",
+                          text: "Off"
+                        }
+                      ]
+                    }) }}
+                  {% endif %}
+
+                {% endfor %}
+
+                {{ govukButton({
+                  text: "Add another",
+                  classes: "govuk-button--secondary"
+                })}}
 
             </div>
 
