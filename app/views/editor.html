@@ -86,13 +86,11 @@
                       items: [
                         {
                           value: "true",
-                          text: "On",
-                          checked: checked(option.name + '[' + param.name +']', "true")
+                          text: "On"
                         },
                         {
                           value: "",
-                          text: "Off",
-                          checked: checked(option.name + '[' + param.name +']', "")
+                          text: "Off"
                         }
                       ]
                     }) }}
@@ -146,7 +144,8 @@
 
                 {{ govukButton({
                   text: "Add another",
-                  classes: "govuk-button--secondary"
+                  classes: "govuk-button--secondary",
+                  value: "add-another(" + option.name + ")"
                 })}}
 
             </div>
@@ -167,43 +166,43 @@
 
         {% if name == "accordion" %}
           {{ govukAccordion(data) }}
-        {% elseif name == "backLink" %}
+        {% elseif name == "back-link" %}
           {{ govukBackLink(data) }}
         {% elseif name == "breadcrumbs" %}
           {{ govukBreadcrumbs(data) }}
         {% elseif name == "button" %}
           {{ govukButton(data) }}
-        {% elseif name == "characterCount" %}
+        {% elseif name == "character-count" %}
           {{ govukCharacterCount(data) }}
         {% elseif name == "checkboxes" %}
           {{ govukCheckboxes(data) }}
-        {% elseif name == "dateInput" %}
+        {% elseif name == "date-input" %}
           {{ govukDateInput(data) }}
         {% elseif name == "details" %}
           {{ govukDetails(data) }}
-        {% elseif name == "errorMessage" %}
+        {% elseif name == "error-message" %}
           {{ govukErrorMessage(data) }}
-        {% elseif name == "errorSummary" %}
+        {% elseif name == "error-summary" %}
           {{ govukErrorSummary(data) }}
         {% elseif name == "fieldset" %}
           {{ govukFieldset(data) }}
-        {% elseif name == "fileUpload" %}
+        {% elseif name == "file-upload" %}
           {{ govukFileUpload(data) }}
         {% elseif name == "input" %}
           {{ govukInput(data) }}
-        {% elseif name == "insetText" %}
+        {% elseif name == "inset-text" %}
           {{ govukInsetText(data) }}
         {% elseif name == "panel" %}
           {{ govukPanel(data) }}
-        {% elseif name == "phaseBanner" %}
+        {% elseif name == "phase-banner" %}
           {{ govukPhaseBanner(data) }}
         {% elseif name == "radios" %}
           {{ govukRadios(data) }}
         {% elseif name == "select" %}
           {{ govukSelect(data) }}
-        {% elseif name == "skipLink" %}
+        {% elseif name == "skip-link" %}
           {{ govukSkipLink(data) }}
-        {% elseif name == "summaryList" %}
+        {% elseif name == "summary-list" %}
           {{ govukSummaryList(data) }}
         {% elseif name == "table" %}
           {{ govukTable(data) }}
@@ -213,14 +212,18 @@
           {{ govukTag(data) }}
         {% elseif name == "textarea" %}
           {{ govukTextarea(data) }}
-        {% elseif name == "warningText" %}
+        {% elseif name == "warning-text" %}
           {{  govukWarningText(data) }}
+        {% else %}
+          <p>Component not found</p>
         {% endif %} 
 
-        {{ govukButton({
-          text: 'Update',
-          classes: 'govuk-!-margin-top-5 govuk-!-margin-bottom-0'
-        })}}
+        <div>
+          {{ govukButton({
+            text: 'Update',
+            classes: 'govuk-!-margin-top-5 govuk-!-margin-bottom-0'
+          })}}
+        </div>
         
       </div>
     </div>
