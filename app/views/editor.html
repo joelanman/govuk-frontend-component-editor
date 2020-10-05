@@ -224,6 +224,19 @@
             classes: 'govuk-!-margin-top-5 govuk-!-margin-bottom-0'
           })}}
         </div>
+
+            {% if name == "details" %}
+
+        <div class="code">
+<pre>
+<code>
+{{ govukDetails(data)|forceescape}}
+
+govukDateInput({{data|dump}})
+</code>
+</pre>
+</div>
+            {% endif %} 
         
       </div>
     </div>
