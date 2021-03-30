@@ -100,6 +100,12 @@ nunjucksConfig.express = app
 
 var nunjucksAppEnv = nunjucks.configure(appViews, nunjucksConfig)
 
+// CUSTOM CODE add getContext so you can access any data in Nunjucks dynamically
+// https://stackoverflow.com/a/38903506
+nunjucksAppEnv.addGlobal('getContext', function (name) {
+  return (name) ? this.ctx[name] : this.ctx
+})
+
 // Add Nunjucks filters
 utils.addNunjucksFilters(nunjucksAppEnv)
 

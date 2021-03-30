@@ -164,59 +164,7 @@
           Preview
         </h2>
 
-        {% if name == "accordion" %}
-          {{ govukAccordion(data) }}
-        {% elseif name == "back-link" %}
-          {{ govukBackLink(data) }}
-        {% elseif name == "breadcrumbs" %}
-          {{ govukBreadcrumbs(data) }}
-        {% elseif name == "button" %}
-          {{ govukButton(data) }}
-        {% elseif name == "character-count" %}
-          {{ govukCharacterCount(data) }}
-        {% elseif name == "checkboxes" %}
-          {{ govukCheckboxes(data) }}
-        {% elseif name == "date-input" %}
-          {{ govukDateInput(data) }}
-        {% elseif name == "details" %}
-          {{ govukDetails(data) }}
-        {% elseif name == "error-message" %}
-          {{ govukErrorMessage(data) }}
-        {% elseif name == "error-summary" %}
-          {{ govukErrorSummary(data) }}
-        {% elseif name == "fieldset" %}
-          {{ govukFieldset(data) }}
-        {% elseif name == "file-upload" %}
-          {{ govukFileUpload(data) }}
-        {% elseif name == "input" %}
-          {{ govukInput(data) }}
-        {% elseif name == "inset-text" %}
-          {{ govukInsetText(data) }}
-        {% elseif name == "panel" %}
-          {{ govukPanel(data) }}
-        {% elseif name == "phase-banner" %}
-          {{ govukPhaseBanner(data) }}
-        {% elseif name == "radios" %}
-          {{ govukRadios(data) }}
-        {% elseif name == "select" %}
-          {{ govukSelect(data) }}
-        {% elseif name == "skip-link" %}
-          {{ govukSkipLink(data) }}
-        {% elseif name == "summary-list" %}
-          {{ govukSummaryList(data) }}
-        {% elseif name == "table" %}
-          {{ govukTable(data) }}
-        {% elseif name == "tabs" %}
-          {{ govukTabs(data) }}
-        {% elseif name == "tag" %}
-          {{ govukTag(data) }}
-        {% elseif name == "textarea" %}
-          {{ govukTextarea(data) }}
-        {% elseif name == "warning-text" %}
-          {{  govukWarningText(data) }}
-        {% else %}
-          <p>Component not found</p>
-        {% endif %} 
+        {{ getContext(macroName)(data) }}
 
         <div>
           {{ govukButton({
@@ -224,8 +172,6 @@
             classes: 'govuk-!-margin-top-5 govuk-!-margin-bottom-0'
           })}}
         </div>
-
-            {% if name == "details" %}
 
             <div class="app-example-wrapper" id="{{ exampleId }}" data-module="app-tabs">
               <ul class="app-tabs" role="tablist">
@@ -237,7 +183,7 @@
               <div class="app-tabs__container js-tabs__container{{ " js-tabs__container--no-tabs" if (params.hideTab) }}" id="{{ exampleId }}-html" role="tabpanel">
                 <div class="app-example__code">
                   <pre data-module="app-copy" tabindex="0"><code class="hljs html">
-                    {{- govukDetails(data)|forceescape -}}
+                    {{- getContext(macroName)(data)|forceescape -}}
                   </code></pre>
                 </div>
               </div>
@@ -248,14 +194,12 @@
               
                 <div class="app-example__code">
                   <pre data-module="app-copy" tabindex="0"><code class="hljs js">
-govukDetails({{data|dump}})
+{{macroName}}({{data|dump}})
                   </code></pre>
                 </div>
               </div>
               
             </div>
-            
-            {% endif %} 
         
       </div>
     </div>
