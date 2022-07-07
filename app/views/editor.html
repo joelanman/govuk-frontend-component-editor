@@ -106,22 +106,29 @@
               <h2 class="govuk-heading-s">
                 {{option.name}}
               </h2>
+
+              {% for index in range(0, getCounter(name, option.name)) %}
+
+                <h2 class="govuk-heading-s">
+                  {{index+1}}
+                </h2>
+
                 {% for param in option.params %}
                   {% if param.type == "string" %}
                     {{ govukInput({
                       label:{
                         text: param.name
                       },
-                      name: option.name + '[][' + param.name +']',
+                      name: option.name + '[' + index + '][' + param.name +']',
                       id: param.name,
-                      value: data[option.name][param.name]
+                      value: data[option.name][index][param.name]
                     }) }}
                   {% elseif param.type == "boolean" %}
           
                     {{ govukRadios({
                       classes: "govuk-radios--inline",
                       idPrefix: option.name + '[' + param.name +']',
-                      name: option.name + '[' + param.name +']',
+                      name: option.name + '[' + index + '][' + '[' + param.name +']',
                       fieldset: {
                         legend: {
                           text: param.name
@@ -141,12 +148,15 @@
                   {% endif %}
 
                 {% endfor %}
+              
+              {% endfor %}
 
-                {{ govukButton({
-                  text: "Add another",
-                  classes: "govuk-button--secondary",
-                  value: "add-another(" + option.name + ")"
-                })}}
+              {{ govukButton({
+                text: "Add another",
+                classes: "govuk-button--secondary",
+                name: "add-another",
+                value: option.name
+              })}}
 
             </div>
 
