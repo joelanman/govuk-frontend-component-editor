@@ -110,20 +110,24 @@
 
               {% for index in range(0, length) %}
 
-                <h2 class="govuk-heading-s">
-                  {{index+1}}
-                </h2>
+                <div class="app-list-row-header">
 
-                {% if length > 1 %}
+                  <h2 class="govuk-heading-s app-list-index">
+                    {{index+1}}
+                  </h2>
 
-                  {{ govukButton({
-                    text: "Remove",
-                    classes: "govuk-button--secondary",
-                    name: "remove",
-                    value: option.name + "," + index
-                  }) }}
+                  {% if length > 1 %}
 
-                {% endif %}
+                    {{ govukButton({
+                      text: "Remove",
+                      classes: "govuk-button--secondary govuk-body-s app-list-remove",
+                      name: "remove",
+                      value: option.name + "," + index
+                    }) }}
+
+                  {% endif %}
+
+                </div>
 
                 {% for param in option.params %}
                   {% if param.type == "string" %}
