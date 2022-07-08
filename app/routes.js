@@ -33,10 +33,25 @@ incrementCounter = function(name, option){
   counters[name][option]++
 }
 
+decrementCounter = function(name, option){
+  if (!counters[name]){
+    return
+  }
+  if (!counters[name][option]){
+    return
+  }
+  if (!counters[name][option] == 1){
+    return
+  }
+  counters[name][option]--
+}
+
 router.get('/components/:name', function (request, response) {
   var options
   var name = request.params.name
   var macroName = componentNameToMacroName(name)
+
+  console.log("get: '/components/" + name)
 
   try {
     options = require('../node_modules/govuk-frontend/govuk/components/' + name + '/macro-options.json')
@@ -56,7 +71,8 @@ router.get('/components/:name', function (request, response) {
 router.post('/components/:name', function (request, response) {
   var options
   var name = request.params.name
-  var macroName = componentNameToMacroName(name)
+
+  console.log("post: '/components/" + name)
 
   try {
     options = require('../node_modules/govuk-frontend/govuk/components/' + name + '/macro-options.json')
@@ -70,6 +86,23 @@ router.post('/components/:name', function (request, response) {
     let option = request.body['add-another']
     incrementCounter(name, option)
   }
+
+  if (request.body['remove']){
+    let input = request.body['remove'].split(",")
+    let option = input[0]
+    let index = input[1]
+
+    let componentData = request.session.data[name]
+    
+    try {
+      componentData[option].splice(index,1)
+    } catch (error){
+      // do nothing, may have been a blank row
+    }
+    decrementCounter(name, option)
+
+  }
+
   response.redirect('/components/' + name)
 
 })
