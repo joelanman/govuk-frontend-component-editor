@@ -46,16 +46,32 @@ router.get('/components/:name', function (request, response) {
     return
   }
 
-  if (request.query['add-another']){
-    let option = request.query['add-another']
-    incrementCounter(name, option)
-  }
-
   response.locals.name = name
   response.locals.macroName = macroName
   response.locals.options = options
   response.locals.getCounter = getCounter
   response.render('editor')
+})
+
+router.post('/components/:name', function (request, response) {
+  var options
+  var name = request.params.name
+  var macroName = componentNameToMacroName(name)
+
+  try {
+    options = require('../node_modules/govuk-frontend/govuk/components/' + name + '/macro-options.json')
+  } catch (error) {
+    response.status(404)
+    response.send(error)
+    return
+  }
+
+  if (request.body['add-another']){
+    let option = request.body['add-another']
+    incrementCounter(name, option)
+  }
+  response.redirect('/components/' + name)
+
 })
 
 module.exports = router
