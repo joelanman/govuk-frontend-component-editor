@@ -45,12 +45,12 @@
                 {
                   value: "true",
                   text: "On",
-                  checked: checked(option.name, "true")
+                  checked: checked(name + "[" + option.name + "]", "true")
                 },
                 {
                   value: "",
                   text: "Off",
-                  checked: checked(option.name, "")
+                  checked: checked(name + "[" + option.name + "]", "")
                 }
               ]
             }) }}
@@ -67,7 +67,7 @@
                       label:{
                         text: param.name
                       },
-                      name: name + "[" + option.name + "]" + '[' + param.name +']',
+                      name: name + '[' + option.name + '][' + param.name + ']',
                       id: param.name,
                       value: data[name][option.name][param.name]
                     }) }}
@@ -76,7 +76,7 @@
                     {{ govukRadios({
                       classes: "govuk-radios--inline",
                       idPrefix: option.name + '[' + param.name +']',
-                      name: name + "[" + option.name + "]" + '[' + param.name +']',
+                      name: name + '[' + option.name + '][' + param.name + ']',
                       fieldset: {
                         legend: {
                           text: param.name
@@ -135,7 +135,7 @@
                       label:{
                         text: param.name
                       },
-                      name: name + "[" + option.name + "]" + '[' + index + '][' + param.name +']',
+                      name: name + '[' + option.name + '][' + index + '][' + param.name + ']',
                       id: param.name,
                       value: data[name][option.name][index][param.name]
                     }) }}
@@ -144,7 +144,7 @@
                     {{ govukRadios({
                       classes: "govuk-radios--inline",
                       idPrefix: option.name + '[' + param.name +']',
-                      name: name + "[" + option.name + "]" + '[' + index + '][' + '[' + param.name +']',
+                      name: name + '[' + option.name + '][' + index + '][' + param.name + ']',
                       fieldset: {
                         legend: {
                           text: param.name
@@ -153,11 +153,13 @@
                       items: [
                         {
                           value: "true",
-                          text: "On"
+                          text: "On",
+                          checked: checked(name + '[' + option.name + '][' + index + '][' + param.name + ']', "true")
                         },
                         {
                           value: "",
-                          text: "Off"
+                          text: "Off",
+                          checked: checked(name + '[' + option.name + '][' + index + '][' + param.name + ']', "")
                         }
                       ]
                     }) }}
