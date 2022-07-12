@@ -38,6 +38,11 @@ module.exports = function (env) {
 
   ------------------------------------------------------------------ */
 
+  filters.renderJSON = function(data){
+    const output = JSON.stringify(data, null, 2)
+    return output
+  }
+
   /* ------------------------------------------------------------------
     keep the following line to return your filters to the app
   ------------------------------------------------------------------ */
