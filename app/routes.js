@@ -12,6 +12,15 @@ const componentNameToMacroName = componentName => {
   return `govuk${macroName}`
 }
 
+const componentNameToPlain = componentName => {
+  const plain = componentName
+    .toLowerCase()
+    .split('-')
+    .join(' ')
+
+  return plain
+}
+
 // Add your routes here - above the module.exports line
 
 // we need counters
@@ -48,21 +57,21 @@ decrementCounter = function(name, option){
 
 router.get('/components/:name', function (request, response) {
   var options
-  var name = request.params.name
-  var macroName = componentNameToMacroName(name)
-
-  console.log("get: '/components/" + name)
+  var componentName = request.params.name
+  var macroName = componentNameToMacroName(componentName)
+  var name = componentNameToPlain(componentName)
 
   try {
-    options = require('./data/' + name + '/macro-options.json')
+    options = require('./data/' + componentName + '/macro-options.json')
   } catch (error) {
     response.status(404)
     response.send(error)
     return
   }
 
-  response.locals.name = name
+  response.locals.componentName = componentName
   response.locals.macroName = macroName
+  response.locals.name = name
   response.locals.options = options
   response.locals.getCounter = getCounter
   response.render('editor')
@@ -70,12 +79,10 @@ router.get('/components/:name', function (request, response) {
 
 router.post('/components/:name', function (request, response) {
   var options
-  var name = request.params.name
-
-  console.log("post: '/components/" + name)
+  var componentName = request.params.name
 
   try {
-    options = require('./data/' + name + '/macro-options.json')
+    options = require('./data/' + componentName + '/macro-options.json')
   } catch (error) {
     response.status(404)
     response.send(error)
@@ -84,7 +91,7 @@ router.post('/components/:name', function (request, response) {
 
   if (request.body['add-another']){
     let option = request.body['add-another']
-    incrementCounter(name, option)
+    incrementCounter(componentName, option)
   }
 
   if (request.body['remove']){
@@ -92,18 +99,18 @@ router.post('/components/:name', function (request, response) {
     let option = input[0]
     let index = input[1]
 
-    let componentData = request.session.data[name]
+    let componentData = request.session.data[componentName]
     
     try {
       componentData[option].splice(index,1)
     } catch (error){
       // do nothing, may have been a blank row
     }
-    decrementCounter(name, option)
+    decrementCounter(componentName, option)
 
   }
 
-  response.redirect('/components/' + name)
+  response.redirect('/components/' + componentName)
 
 })
 

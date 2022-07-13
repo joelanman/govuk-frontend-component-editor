@@ -28,16 +28,16 @@
                   label:{
                     text: option.name
                   },
-                  name: name + "[" + option.name + "]",
+                  name: componentName + "[" + option.name + "]",
                   id: option.name,
-                  value: data[name][option.name]
+                  value: data[componentName][option.name]
                 }) }}
               {% elseif option.type == "boolean" %}
       
                 {{ govukRadios({
                   classes: "govuk-radios--inline",
                   idPrefix: option.name,
-                  name: name + "[" + option.name + "]",
+                  name: componentName + "[" + option.name + "]",
                   fieldset: {
                     legend: {
                       text: option.name
@@ -47,12 +47,12 @@
                     {
                       value: "true",
                       text: "On",
-                      checked: checked(name + "[" + option.name + "]", "true")
+                      checked: checked(componentName + "[" + option.name + "]", "true")
                     },
                     {
                       value: "",
                       text: "Off",
-                      checked: checked(name + "[" + option.name + "]", "")
+                      checked: checked(componentName + "[" + option.name + "]", "")
                     }
                   ]
                 }) }}
@@ -61,7 +61,7 @@
 
                 <div class="govuk-inset-text">
                   <h2 class="govuk-heading-s">
-                    {{option.name}}
+                    {{ option.name }}
                   </h2>
                     {% for param in option.params %}
 
@@ -72,16 +72,16 @@
                             label:{
                               text: param.name
                             },
-                            name: name + '[' + option.name + '][' + param.name + ']',
+                            name: componentName + '[' + option.name + '][' + param.name + ']',
                             id: param.name,
-                            value: data[name][option.name][param.name]
+                            value: data[componentName][option.name][param.name]
                           }) }}
                         {% elseif param.type == "boolean" %}
                 
                           {{ govukRadios({
                             classes: "govuk-radios--inline",
-                            idPrefix: option.name + '[' + param.name +']',
-                            name: name + '[' + option.name + '][' + param.name + ']',
+                            idPrefix: option.componentName + '[' + param.name +']',
+                            name: componentName + '[' + option.name + '][' + param.name + ']',
                             fieldset: {
                               legend: {
                                 text: param.name
@@ -145,16 +145,16 @@
                             label:{
                               text: param.name
                             },
-                            name: name + '[' + option.name + '][' + index + '][' + param.name + ']',
+                            name: componentName + '[' + option.name + '][' + index + '][' + param.name + ']',
                             id: param.name,
-                            value: data[name][option.name][index][param.name]
+                            value: data[componentName][option.name][index][param.name]
                           }) }}
                         {% elseif param.type == "boolean" %}
                 
                           {{ govukRadios({
                             classes: "govuk-radios--inline",
-                            idPrefix: option.name + '[' + param.name +']',
-                            name: name + '[' + option.name + '][' + index + '][' + param.name + ']',
+                            idPrefix: option.componentName + '[' + param.name +']',
+                            name: componentName + '[' + option.name + '][' + index + '][' + param.name + ']',
                             fieldset: {
                               legend: {
                                 text: param.name
@@ -164,12 +164,12 @@
                               {
                                 value: "true",
                                 text: "On",
-                                checked: checked(name + '[' + option.name + '][' + index + '][' + param.name + ']', "true")
+                                checked: checked(componentName + '[' + option.name + '][' + index + '][' + param.name + ']', "true")
                               },
                               {
                                 value: "",
                                 text: "Off",
-                                checked: checked(name + '[' + option.name + '][' + index + '][' + param.name + ']', "")
+                                checked: checked(componentName + '[' + option.name + '][' + index + '][' + param.name + ']', "")
                               }
                             ]
                           }) }}
@@ -206,7 +206,7 @@
           Preview
         </h2>
 
-        {{ getContext(macroName)(data[name]) }}
+        {{ getContext(macroName)(data[componentName]) }}
 
         <div>
           {{ govukButton({
@@ -225,7 +225,7 @@
               <div class="app-tabs__container js-tabs__container{{ " js-tabs__container--no-tabs" if (params.hideTab) }}" id="{{ exampleId }}-html" role="tabpanel">
                 <div class="app-example__code">
                   <pre data-module="app-copy" tabindex="0"><code class="hljs html">
-                    {{- getContext(macroName)(data[name])|forceescape -}}
+                    {{- getContext(macroName)(data[componentName])|forceescape -}}
                   </code></pre>
                 </div>
               </div>
@@ -236,7 +236,7 @@
               
                 <div class="app-example__code">
                   <pre data-module="app-copy" tabindex="0"><code class="hljs js">
-{{macroName}}({{data[name]|renderJSON}})
+{{macroName}}({{data[componentName]|renderJSON}})
                   </code></pre>
                 </div>
               </div>
