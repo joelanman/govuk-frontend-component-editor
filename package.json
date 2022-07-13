@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node start",
     "build": "node lib/build/generate-assets",
-    "serve": "node listen-on-port"
+    "serve": "node listen-on-port",
+    "test": "jest"
   },
   "dependencies": {
     "acorn": "^8.5.0",
@@ -43,5 +44,8 @@
     "sync-request": "^6.0.0",
     "universal-analytics": "^0.5.3",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "jest": "^28.1.2"
   }
 }
