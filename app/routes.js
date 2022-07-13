@@ -23,16 +23,14 @@ const componentNameToPlain = componentName => {
 
 // Add your routes here - above the module.exports line
 
-// we need counters
+incrementCounter = function(name, option, session){
 
-let counters = {}
+  if (!session.counters){
+    session.counters = {}
+  }
 
-getCounter = function(name, option){
-  counter = counters?.[name]?.[option] || 1
-  return counter
-}
+  let counters = session.counters
 
-incrementCounter = function(name, option){
   if (!counters[name]){
     counters[name] = {}
   }
@@ -42,7 +40,14 @@ incrementCounter = function(name, option){
   counters[name][option]++
 }
 
-decrementCounter = function(name, option){
+decrementCounter = function(name, option, session){
+
+  if (!session.counters){
+    session.counters = {}
+  }
+
+  let counters = session.counters
+
   if (!counters[name]){
     return
   }
@@ -69,6 +74,11 @@ router.get('/components/:name', function (request, response) {
     return
   }
 
+  getCounter = function(name, option){
+    counter = request.session?.counters?.[name]?.[option] || 1
+    return counter
+  }
+
   response.locals.componentName = componentName
   response.locals.macroName = macroName
   response.locals.name = name
@@ -91,7 +101,7 @@ router.post('/components/:name', function (request, response) {
 
   if (request.body['add-another']){
     let option = request.body['add-another']
-    incrementCounter(componentName, option)
+    incrementCounter(componentName, option, request.session)
   }
 
   if (request.body['remove']){
@@ -106,7 +116,7 @@ router.post('/components/:name', function (request, response) {
     } catch (error){
       // do nothing, may have been a blank row
     }
-    decrementCounter(componentName, option)
+    decrementCounter(componentName, option, request.session)
 
   }
 
