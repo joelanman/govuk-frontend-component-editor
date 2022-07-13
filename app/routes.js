@@ -54,7 +54,7 @@ router.get('/components/:name', function (request, response) {
   console.log("get: '/components/" + name)
 
   try {
-    options = require('../node_modules/govuk-frontend/govuk/components/' + name + '/macro-options.json')
+    options = require('./data/' + name + '/macro-options.json')
   } catch (error) {
     response.status(404)
     response.send(error)
@@ -75,7 +75,7 @@ router.post('/components/:name', function (request, response) {
   console.log("post: '/components/" + name)
 
   try {
-    options = require('../node_modules/govuk-frontend/govuk/components/' + name + '/macro-options.json')
+    options = require('./data/' + name + '/macro-options.json')
   } catch (error) {
     response.status(404)
     response.send(error)

@@ -20,167 +20,181 @@
 
      {% for option in options %}
 
-      <div>
-          {% if option.type == "string" %}
-            {{ govukInput({
-              label:{
-                text: option.name
-              },
-              name: name + "[" + option.name + "]",
-              id: option.name,
-              value: data[name][option.name]
-            }) }}
-          {% elseif option.type == "boolean" %}
-  
-            {{ govukRadios({
-              classes: "govuk-radios--inline",
-              idPrefix: option.name,
-              name: name + "[" + option.name + "]",
-              fieldset: {
-                legend: {
-                  text: option.name
-                }
-              },
-              items: [
-                {
-                  value: "true",
-                  text: "On",
-                  checked: checked(name + "[" + option.name + "]", "true")
-                },
-                {
-                  value: "",
-                  text: "Off",
-                  checked: checked(name + "[" + option.name + "]", "")
-                }
-              ]
-            }) }}
+        {% if not option.advanced  %}
 
-          {% elseif option.type == "object" and option.isComponent != true %}
+          <div>
+              {% if option.type == "string" %}
+                {{ govukInput({
+                  label:{
+                    text: option.name
+                  },
+                  name: name + "[" + option.name + "]",
+                  id: option.name,
+                  value: data[name][option.name]
+                }) }}
+              {% elseif option.type == "boolean" %}
+      
+                {{ govukRadios({
+                  classes: "govuk-radios--inline",
+                  idPrefix: option.name,
+                  name: name + "[" + option.name + "]",
+                  fieldset: {
+                    legend: {
+                      text: option.name
+                    }
+                  },
+                  items: [
+                    {
+                      value: "true",
+                      text: "On",
+                      checked: checked(name + "[" + option.name + "]", "true")
+                    },
+                    {
+                      value: "",
+                      text: "Off",
+                      checked: checked(name + "[" + option.name + "]", "")
+                    }
+                  ]
+                }) }}
 
-            <div class="govuk-inset-text">
-              <h2 class="govuk-heading-s">
-                {{option.name}}
-              </h2>
-                {% for param in option.params %}
-                  {% if param.type == "string" %}
-                    {{ govukInput({
-                      label:{
-                        text: param.name
-                      },
-                      name: name + '[' + option.name + '][' + param.name + ']',
-                      id: param.name,
-                      value: data[name][option.name][param.name]
-                    }) }}
-                  {% elseif param.type == "boolean" %}
-          
-                    {{ govukRadios({
-                      classes: "govuk-radios--inline",
-                      idPrefix: option.name + '[' + param.name +']',
-                      name: name + '[' + option.name + '][' + param.name + ']',
-                      fieldset: {
-                        legend: {
-                          text: param.name
-                        }
-                      },
-                      items: [
-                        {
-                          value: "true",
-                          text: "On"
-                        },
-                        {
-                          value: "",
-                          text: "Off"
-                        }
-                      ]
-                    }) }}
-                  {% endif %}
+              {% elseif option.type == "object" and option.isComponent != true %}
 
-                {% endfor %}
-
-            </div>
-
-          {% elseif option.type == "array" %}
-
-            <div class="govuk-inset-text">
-              <h2 class="govuk-heading-s">
-                {{option.name}}
-              </h2>
-
-              {% set length = getCounter(name, option.name) %}
-
-              {% for index in range(0, length) %}
-
-                <div class="app-list-row-header">
-
-                  <h2 class="govuk-heading-s app-list-index">
-                    {{index+1}}
+                <div class="govuk-inset-text">
+                  <h2 class="govuk-heading-s">
+                    {{option.name}}
                   </h2>
+                    {% for param in option.params %}
 
-                  {% if length > 1 %}
+                      {% if not param.advanced  %}
 
-                    {{ govukButton({
-                      text: "Remove",
-                      classes: "govuk-button--secondary govuk-body-s app-list-remove",
-                      name: "remove",
-                      value: option.name + "," + index
-                    }) }}
+                        {% if param.type == "string" %}
+                          {{ govukInput({
+                            label:{
+                              text: param.name
+                            },
+                            name: name + '[' + option.name + '][' + param.name + ']',
+                            id: param.name,
+                            value: data[name][option.name][param.name]
+                          }) }}
+                        {% elseif param.type == "boolean" %}
+                
+                          {{ govukRadios({
+                            classes: "govuk-radios--inline",
+                            idPrefix: option.name + '[' + param.name +']',
+                            name: name + '[' + option.name + '][' + param.name + ']',
+                            fieldset: {
+                              legend: {
+                                text: param.name
+                              }
+                            },
+                            items: [
+                              {
+                                value: "true",
+                                text: "On"
+                              },
+                              {
+                                value: "",
+                                text: "Off"
+                              }
+                            ]
+                          }) }}
+                        {% endif %}
+                      
+                      {% endif %}
 
-                  {% endif %}
+                    {% endfor %}
 
                 </div>
 
-                {% for param in option.params %}
-                  {% if param.type == "string" %}
-                    {{ govukInput({
-                      label:{
-                        text: param.name
-                      },
-                      name: name + '[' + option.name + '][' + index + '][' + param.name + ']',
-                      id: param.name,
-                      value: data[name][option.name][index][param.name]
-                    }) }}
-                  {% elseif param.type == "boolean" %}
-          
-                    {{ govukRadios({
-                      classes: "govuk-radios--inline",
-                      idPrefix: option.name + '[' + param.name +']',
-                      name: name + '[' + option.name + '][' + index + '][' + param.name + ']',
-                      fieldset: {
-                        legend: {
-                          text: param.name
-                        }
-                      },
-                      items: [
-                        {
-                          value: "true",
-                          text: "On",
-                          checked: checked(name + '[' + option.name + '][' + index + '][' + param.name + ']', "true")
-                        },
-                        {
-                          value: "",
-                          text: "Off",
-                          checked: checked(name + '[' + option.name + '][' + index + '][' + param.name + ']', "")
-                        }
-                      ]
-                    }) }}
-                  {% endif %}
+              {% elseif option.type == "array" %}
 
-                {% endfor %}
-              
-              {% endfor %}
+                <div class="govuk-inset-text">
+                  <h2 class="govuk-heading-s">
+                    {{option.name}}
+                  </h2>
 
-              {{ govukButton({
-                text: "Add another",
-                classes: "govuk-button--secondary",
-                name: "add-another",
-                value: option.name
-              }) }}
+                  {% set length = getCounter(name, option.name) %}
 
-            </div>
+                  {% for index in range(0, length) %}
 
-          {% endif %}
-        </span>
-      </div>
+                    <div class="app-list-row-header">
+
+                      <h2 class="govuk-heading-s app-list-index">
+                        {{index+1}}
+                      </h2>
+
+                      {% if length > 1 %}
+
+                        {{ govukButton({
+                          text: "Remove",
+                          classes: "govuk-button--secondary govuk-body-s app-list-remove",
+                          name: "remove",
+                          value: option.name + "," + index
+                        }) }}
+
+                      {% endif %}
+
+                    </div>
+
+                    {% for param in option.params %}
+
+                      {% if not param.advanced  %}
+
+                        {% if param.type == "string" %}
+                          {{ govukInput({
+                            label:{
+                              text: param.name
+                            },
+                            name: name + '[' + option.name + '][' + index + '][' + param.name + ']',
+                            id: param.name,
+                            value: data[name][option.name][index][param.name]
+                          }) }}
+                        {% elseif param.type == "boolean" %}
+                
+                          {{ govukRadios({
+                            classes: "govuk-radios--inline",
+                            idPrefix: option.name + '[' + param.name +']',
+                            name: name + '[' + option.name + '][' + index + '][' + param.name + ']',
+                            fieldset: {
+                              legend: {
+                                text: param.name
+                              }
+                            },
+                            items: [
+                              {
+                                value: "true",
+                                text: "On",
+                                checked: checked(name + '[' + option.name + '][' + index + '][' + param.name + ']', "true")
+                              },
+                              {
+                                value: "",
+                                text: "Off",
+                                checked: checked(name + '[' + option.name + '][' + index + '][' + param.name + ']', "")
+                              }
+                            ]
+                          }) }}
+                        {% endif %}
+
+                      {% endif %}
+
+                    {% endfor %}
+                  
+                  {% endfor %}
+
+                  {{ govukButton({
+                    text: "Add another",
+                    classes: "govuk-button--secondary",
+                    name: "add-another",
+                    value: option.name
+                  }) }}
+
+                </div>
+
+              {% endif %}
+            </span>
+          </div>
+
+        {% endif %}
 
      {% endfor %}
 
