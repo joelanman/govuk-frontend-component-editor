@@ -12,6 +12,10 @@ const componentNameToMacroName = componentName => {
   return `govuk${macroName}`
 }
 
+const macroNameToComponentName = macroName => {
+  return macroName.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
+}
+
 const componentNameToPlain = componentName => {
   const plain = componentName
     .toLowerCase()
@@ -73,6 +77,22 @@ router.get('/components/:name', function (request, response) {
     response.send(error)
     return
   }
+
+  // walk the options tree to load in sub-component options
+
+  function getSubComponentOptions(options){
+    for (let key in options){
+      let option = options[key]
+      if (option.isComponent){
+        const componentName = macroNameToComponentName(option.name)
+        const subComponentOptions = require('./data/' + componentName + '/macro-options.json')
+        option.params = subComponentOptions
+        console.log(subComponentOptions)
+      }
+    }
+  }
+
+  getSubComponentOptions(options)
 
   getCounter = function(name, option){
     counter = request.session?.counters?.[name]?.[option] || 1

@@ -11,7 +11,8 @@
         "type": "object",
         "required": false,
         "description": "Options for the fieldset component (for example legend).",
-        "isComponent": true
+        "isComponent": true,
+        "advanced": true
     },
     {
         "name": "hint",
