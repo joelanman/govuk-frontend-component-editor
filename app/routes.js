@@ -89,6 +89,18 @@ router.get('/components/:name', function (request, response) {
         option.params = subComponentOptions
         console.log(subComponentOptions)
       }
+      // if (option.name.includes(".")){
+      //   const nameParts = option.name.split(".")
+      //   if (!options[nameParts[0]]){
+      //     options[nameParts[0]] = {
+      //       type: "object",
+      //       name: options[nameParts[0]],
+      //       params: []
+      //     }
+      //   }
+      //   option.name = nameParts[1]
+      //   options[nameParts[0]].params.push(option)
+      // }
     }
   }
 
