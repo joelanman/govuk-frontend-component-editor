@@ -82,33 +82,66 @@ router.get('/components/:name', function (request, response) {
     return
   }
 
-  // walk the options tree to load in sub-component options
+  // load in sub-component options
+  // turn dot notation into objects
 
-  function getSubComponentOptions(options){
+  function processOptions(options){
     for (let key in options){
       let option = options[key]
       if (option.isComponent){
         const componentName = macroNameToComponentName(option.name)
         const subComponentOptions = require('./data/' + componentName + '/macro-options.json')
         option.params = subComponentOptions
-        console.log(subComponentOptions)
       }
-      // if (option.name.includes(".")){
-      //   const nameParts = option.name.split(".")
-      //   if (!options[nameParts[0]]){
-      //     options[nameParts[0]] = {
-      //       type: "object",
-      //       name: options[nameParts[0]],
-      //       params: []
-      //     }
-      //   }
-      //   option.name = nameParts[1]
-      //   options[nameParts[0]].params.push(option)
-      // }
+
+      if (option.type == "array"){
+        for (let index = 0; index < option.params.length; index++){
+          const param = option.params[index]
+          if (param.name.includes(".")){
+            const nameParts = param.name.split(".")
+            // look for a param with object name
+            let foundIndex = -1
+            for (let index2 = 0; index2 < option.params.length; index2++){
+              const param2 = option.params[index2]
+              if (param2.name == nameParts[0]){
+                foundIndex = index2
+                break
+              }
+            }
+            // create it if it doesnt exist
+            if (foundIndex == -1){
+              let objectParam = {
+                name: nameParts[0],
+                type: "object",
+                params: [{
+                  name: nameParts[1],
+                  type: param.type,
+                  required: param.required,
+                  description: param.description,
+                  advanced: param.advanced
+                }]
+              }
+              option.params.push(objectParam)
+            } else {
+              let params = option.params[foundIndex].params
+              params.push({
+                name: nameParts[1],
+                type: param.type,
+                required: param.required,
+                description: param.description,
+                advanced: param.advanced
+              })
+            }
+            // delete this param
+            option.params.splice(index,1)
+            index--
+          }
+        }
+      }
     }
   }
 
-  getSubComponentOptions(options)
+  processOptions(options)
 
   getCounter = function(name, option){
     counter = request.session?.counters?.[name]?.[option] || 1

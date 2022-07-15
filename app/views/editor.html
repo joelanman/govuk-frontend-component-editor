@@ -189,6 +189,58 @@
                               }
                             ]
                           }) }}
+
+                        {% elseif param.type == "object" %}
+
+                          <div class="govuk-inset-text">
+                            <h2 class="govuk-heading-s">
+                              {{ param.name }}
+                            </h2>
+                              {% for param2 in param.params %}
+          
+                                {% if showAdvancedOptions or not param2.advanced  %}
+          
+                                  {% if param2.type == "string" %}
+                                    {{ govukInput({
+                                      label:{
+                                        text: param2.name
+                                      },
+                                      name: componentName + '[' + option.name + '][' + index + '][' + param.name + '][' + param2.name + ']',
+                                      id: param.name + " " + param2.name,
+                                      value: data[componentName][option.name][index][param.name][param2.name]
+                                    }) }}
+                                  {% elseif param.type == "boolean" %}
+                          
+                                    {{ govukRadios({
+                                      classes: "govuk-radios--inline",
+                                      idPrefix: option.componentName + '[' + param.name +']',
+                                      name: componentName + '[' + option.name + '][' + param.name + ']',
+                                      fieldset: {
+                                        legend: {
+                                          text: param.name
+                                        }
+                                      },
+                                      items: [
+                                        {
+                                          value: "true",
+                                          text: "On",
+                                          checked: checked(componentName + "[" + option.name + "][" + param.name + "]", "true")
+                                        },
+                                        {
+                                          value: "",
+                                          text: "Off",
+                                          checked: checked(componentName + "[" + option.name + "][" + param.name + "]", "")
+                                        }
+                                      ]
+                                    }) }}
+                                  {% endif %}
+                                
+                                {% endif %}
+          
+                              {% endfor %}
+          
+                          </div>
+          
                         {% endif %}
 
                       {% endif %}
