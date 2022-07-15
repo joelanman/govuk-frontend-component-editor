@@ -1,5 +1,8 @@
+const url = require('url')
+
 const express = require('express')
 const router = express.Router()
+
 
 const componentNameToMacroName = componentName => {
   const macroName = componentName
@@ -69,6 +72,7 @@ router.get('/components/:name', function (request, response) {
   var componentName = request.params.name
   var macroName = componentNameToMacroName(componentName)
   var name = componentNameToPlain(componentName)
+  var showAdvancedOptions = (request.query.advanced) ? true : false
 
   try {
     options = require('./data/' + componentName + '/macro-options.json')
@@ -111,11 +115,34 @@ router.get('/components/:name', function (request, response) {
     return counter
   }
 
+  let newQuery = request.query
+
+  if (showAdvancedOptions){
+
+    delete newQuery.advanced
+
+    response.locals.hideAdvancedOptionsURL = url.format({
+      pathname: request.path,
+      query: newQuery
+    })
+
+  } else {
+
+    newQuery.advanced=true
+
+    response.locals.showAdvancedOptionsURL = url.format({
+      pathname: request.path,
+      query: newQuery
+    })
+
+  }
+
   response.locals.componentName = componentName
   response.locals.macroName = macroName
   response.locals.name = name
   response.locals.options = options
   response.locals.getCounter = getCounter
+  response.locals.showAdvancedOptions = showAdvancedOptions
   response.render('editor')
 })
 

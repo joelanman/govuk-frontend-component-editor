@@ -17,10 +17,24 @@
       <h1 class="govuk-heading-l">
         {{ name|capitalize }}
       </h1>
+      
+      {% if (showAdvancedOptions) %}
+        <p>
+          <a href="{{ hideAdvancedOptionsURL }}" class="govuk-body-s">
+            Hide advanced options
+          </a>
+        </p>
+      {% else %}
+        <p>
+          <a href="{{ showAdvancedOptionsURL }}" class="govuk-body-s">
+            Show advanced options
+          </a>
+        </p>
+      {% endif %}
 
      {% for option in options %}
 
-        {% if not option.advanced  %}
+        {% if showAdvancedOptions or not option.advanced  %}
 
           <div>
               {% if option.type == "string" %}
@@ -65,7 +79,7 @@
                   </h2>
                     {% for param in option.params %}
 
-                      {% if not param.advanced  %}
+                      {% if showAdvancedOptions or not param.advanced  %}
 
                         {% if param.type == "string" %}
                           {{ govukInput({
@@ -140,7 +154,7 @@
 
                     {% for param in option.params %}
 
-                      {% if not param.advanced  %}
+                      {% if showAdvancedOptions or not param.advanced  %}
 
                         {% if param.type == "string" %}
                           {{ govukInput({
