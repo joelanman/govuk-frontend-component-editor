@@ -206,30 +206,30 @@
                                         text: param2.name
                                       },
                                       name: componentName + '[' + option.name + '][' + index + '][' + param.name + '][' + param2.name + ']',
-                                      id: param.name + " " + param2.name,
+                                      id: componentName + '[' + option.name + '][' + index + '][' + param.name + '][' + param2.name + ']',
                                       value: data[componentName][option.name][index][param.name][param2.name]
                                     }) }}
                                   {% elseif param.type == "boolean" %}
                           
                                     {{ govukRadios({
                                       classes: "govuk-radios--inline",
-                                      idPrefix: option.componentName + '[' + param.name +']',
-                                      name: componentName + '[' + option.name + '][' + param.name + ']',
+                                      idPrefix: componentName + '[' + option.name + '][' + index + '][' + param.name + '][' + param2.name + ']',
+                                      name: componentName + '[' + option.name + '][' + index + '][' + param.name + '][' + param2.name + ']',
                                       fieldset: {
                                         legend: {
-                                          text: param.name
+                                          text: param2.name
                                         }
                                       },
                                       items: [
                                         {
                                           value: "true",
                                           text: "On",
-                                          checked: checked(componentName + "[" + option.name + "][" + param.name + "]", "true")
+                                          checked: checked(componentName + '[' + option.name + '][' + index + '][' + param.name + '][' + param2.name + ']', "true")
                                         },
                                         {
                                           value: "",
                                           text: "Off",
-                                          checked: checked(componentName + "[" + option.name + "][" + param.name + "]", "")
+                                          checked: checked(componentName + '[' + option.name + '][' + index + '][' + param.name + '][' + param2.name + ']', "")
                                         }
                                       ]
                                     }) }}
