@@ -97,6 +97,17 @@ router.get('/components/:name', function (request, response) {
       if (option.type == "array"){
         for (let index = 0; index < option.params.length; index++){
           const param = option.params[index]
+
+          // fix conditional bug
+          // https://github.com/alphagov/govuk-frontend/issues/1903
+
+          if (param.name == 'conditional'){
+            // delete this param
+            option.params.splice(index,1)
+            index--
+            continue
+          }
+
           if (param.name.includes(".")){
             const nameParts = param.name.split(".")
             // look for a param with object name

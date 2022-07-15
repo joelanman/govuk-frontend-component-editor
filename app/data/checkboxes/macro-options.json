@@ -85,7 +85,8 @@
                 "name": "name",
                 "type": "string",
                 "required": false,
-                "description": "Specific name for the checkbox item. If omitted, then component global `name` string will be applied."
+                "description": "Specific name for the checkbox item. If omitted, then component global `name` string will be applied.",
+                "advanced": true
             },
             {
                 "name": "value",
@@ -98,14 +99,16 @@
                 "type": "object",
                 "required": false,
                 "description": "Provide attributes and classes to each checkbox item label.",
-                "isComponent": true
+                "isComponent": true,
+                "advanced": true
             },
             {
                 "name": "hint",
                 "type": "object",
                 "required": false,
                 "description": "Provide hint to each checkbox item.",
-                "isComponent": true
+                "isComponent": true,
+                "advanced": true
             },
             {
                 "name": "divider",

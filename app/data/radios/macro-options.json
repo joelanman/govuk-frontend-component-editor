@@ -4,8 +4,7 @@
         "type": "object",
         "required": false,
         "description": "Options for the fieldset component (for example legend).",
-        "isComponent": true,
-        "advanced": true
+        "isComponent": true
     },
     {
         "name": "hint",
@@ -85,14 +84,16 @@
                 "type": "object",
                 "required": false,
                 "description": "Provide attributes and classes to each radio item label.",
-                "isComponent": true
+                "isComponent": true,
+                "advanced": true
             },
             {
                 "name": "hint",
                 "type": "object",
                 "required": false,
                 "description": "Provide hint to each radio item.",
-                "isComponent": true
+                "isComponent": true,
+                "advanced": true
             },
             {
                 "name": "divider",
