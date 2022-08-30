@@ -53,6 +53,6 @@ function createSessionDataDefaults () {
 
 (async () => {
   createSessionDataDefaults()
-  await collectDataUsage()
+  // await collectDataUsage()
   await buildWatchAndServe()
 })()
