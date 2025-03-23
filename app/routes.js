@@ -67,6 +67,77 @@ decrementCounter = function(name, option, session){
   counters[name][option]--
 }
 
+
+// load in sub-component options
+// turn dot notation into objects
+
+function processOptions(options){
+  for (let key in options){
+    let option = options[key]
+    if (option.isComponent){
+      const componentName = macroNameToComponentName(option.name)
+      const subComponentOptions = require('./data/' + componentName + '/macro-options.json')
+      option.params = subComponentOptions
+    }
+
+    if (option.type == "array"){
+      for (let index = 0; index < option.params.length; index++){
+        const param = option.params[index]
+
+        // fix conditional bug
+        // https://github.com/alphagov/govuk-frontend/issues/1903
+
+        if (param.name == 'conditional'){
+          // delete this param
+          option.params.splice(index,1)
+          index--
+          continue
+        }
+
+        if (param.name.includes(".")){
+          const nameParts = param.name.split(".")
+          // look for a param with object name
+          let foundIndex = -1
+          for (let index2 = 0; index2 < option.params.length; index2++){
+            const param2 = option.params[index2]
+            if (param2.name == nameParts[0]){
+              foundIndex = index2
+              break
+            }
+          }
+          // create it if it doesnt exist
+          if (foundIndex == -1){
+            let objectParam = {
+              name: nameParts[0],
+              type: "object",
+              params: [{
+                name: nameParts[1],
+                type: param.type,
+                required: param.required,
+                description: param.description,
+                advanced: param.advanced
+              }]
+            }
+            option.params.push(objectParam)
+          } else {
+            let params = option.params[foundIndex].params
+            params.push({
+              name: nameParts[1],
+              type: param.type,
+              required: param.required,
+              description: param.description,
+              advanced: param.advanced
+            })
+          }
+          // delete this param
+          option.params.splice(index,1)
+          index--
+        }
+      }
+    }
+  }
+}
+
 router.get('/components/:name', function (request, response) {
   var options
   var componentName = request.params.name
@@ -80,76 +151,6 @@ router.get('/components/:name', function (request, response) {
     response.status(404)
     response.send(error)
     return
-  }
-
-  // load in sub-component options
-  // turn dot notation into objects
-
-  function processOptions(options){
-    for (let key in options){
-      let option = options[key]
-      if (option.isComponent){
-        const componentName = macroNameToComponentName(option.name)
-        const subComponentOptions = require('./data/' + componentName + '/macro-options.json')
-        option.params = subComponentOptions
-      }
-
-      if (option.type == "array"){
-        for (let index = 0; index < option.params.length; index++){
-          const param = option.params[index]
-
-          // fix conditional bug
-          // https://github.com/alphagov/govuk-frontend/issues/1903
-
-          if (param.name == 'conditional'){
-            // delete this param
-            option.params.splice(index,1)
-            index--
-            continue
-          }
-
-          if (param.name.includes(".")){
-            const nameParts = param.name.split(".")
-            // look for a param with object name
-            let foundIndex = -1
-            for (let index2 = 0; index2 < option.params.length; index2++){
-              const param2 = option.params[index2]
-              if (param2.name == nameParts[0]){
-                foundIndex = index2
-                break
-              }
-            }
-            // create it if it doesnt exist
-            if (foundIndex == -1){
-              let objectParam = {
-                name: nameParts[0],
-                type: "object",
-                params: [{
-                  name: nameParts[1],
-                  type: param.type,
-                  required: param.required,
-                  description: param.description,
-                  advanced: param.advanced
-                }]
-              }
-              option.params.push(objectParam)
-            } else {
-              let params = option.params[foundIndex].params
-              params.push({
-                name: nameParts[1],
-                type: param.type,
-                required: param.required,
-                description: param.description,
-                advanced: param.advanced
-              })
-            }
-            // delete this param
-            option.params.splice(index,1)
-            index--
-          }
-        }
-      }
-    }
   }
 
   processOptions(options)
