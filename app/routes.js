@@ -61,7 +61,7 @@ decrementCounter = function(name, option, session){
   if (!counters[name][option]){
     return
   }
-  if (!counters[name][option] == 1){
+  if (counters[name][option] == 1){
     return
   }
   counters[name][option]--
