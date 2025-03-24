@@ -228,4 +228,71 @@ router.post('/components/:name', function (request, response) {
 
 })
 
+router.get('/components/ai/:name', function (request, response) {
+  
+  var componentName = request.params.name
+  var macroName = componentNameToMacroName(componentName)
+  var name = componentNameToPlain(componentName)
+
+  response.locals.componentName = componentName
+  response.locals.macroName = macroName
+  response.locals.name = name
+
+  response.render('ai-editor')
+
+})
+
+router.post('/components/ai/:name', async function (request, response) {
+  
+  const componentName = request.params.name
+
+  const componentOptions = require('./data/' + componentName + '/macro-options.json')
+
+  const prompt = request.body.prompt
+
+  const message = `
+  Generate configuration for a GOV.UK Design System component.
+  
+  Component name: ${componentName}
+  Nunjucks reference: ${JSON.stringify(componentOptions)}
+  
+  User's request: "${prompt}"
+  
+  Generate a JSON object with appropriate configuration for this component based on the user's request.
+  Default isPageHeading to true unless specified.
+  If isPageHeading is true set the main legend classes to 'govuk-fieldset__legend--l' for legend or 'govuk-label--l' for label
+  The response should be a valid JSON object that can be used with the Nunjucks macro.
+  `
+
+  console.log(message)
+
+  const aiURL = 'http://localhost:11434/api/generate'
+  
+  aiData = {
+    model: "mistral-small:24b",
+    // model: "gemma3:12b",
+    prompt: message,
+    stream: false,
+    format: 'json'
+  }
+
+  const aiResponse = await fetch(aiURL, {
+    method: 'post',
+    body: JSON.stringify(aiData)
+  })
+
+  const aiResponseJSON = await aiResponse.json()
+
+  console.log(aiResponseJSON.response)
+
+  const parsed = JSON.parse(aiResponseJSON.response)
+
+  request.session.data[componentName] = parsed
+  response.locals.data[componentName] = parsed
+
+  response.redirect('/components/ai/' + componentName)
+
+})
+
+
 module.exports = router
