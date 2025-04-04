@@ -136,6 +136,7 @@ function processOptions(options){
       }
     }
   }
+  return options
 }
 
 router.get('/components/:name', function (request, response) {
@@ -153,7 +154,7 @@ router.get('/components/:name', function (request, response) {
     return
   }
 
-  processOptions(options)
+  options = processOptions(options)
 
   getCounter = function(name, option){
     counter = request.session?.counters?.[name]?.[option] || 1
@@ -246,7 +247,17 @@ router.post('/components/ai/:name', async function (request, response) {
   
   const componentName = request.params.name
 
-  const componentOptions = require('./data/' + componentName + '/macro-options.json')
+  let componentOptions
+
+  try {
+    componentOptions = require('./data/' + componentName + '/macro-options.json')
+  } catch (error) {
+    response.status(404)
+    response.send(error)
+    return
+  }
+
+  componentOptions = processOptions(componentOptions)
 
   const prompt = request.body.prompt
 
@@ -258,10 +269,10 @@ router.post('/components/ai/:name', async function (request, response) {
   
   User's request: "${prompt}"
   
-  Generate a JSON object with appropriate configuration for this component based on the user's request.
+  Generate a JSON object with the configuration for this component based on the user's request.
   Default isPageHeading to true unless specified.
   If isPageHeading is true set the main legend classes to 'govuk-fieldset__legend--l' for legend or 'govuk-label--l' for label
-  The response should be a valid JSON object that can be used with the Nunjucks macro.
+  Prefer the text parameter over html
   `
 
   console.log(message)
@@ -270,10 +281,15 @@ router.post('/components/ai/:name', async function (request, response) {
   
   aiData = {
     model: "mistral-small:24b",
+    // model: "deepseek-r1:14b",
     // model: "gemma3:12b",
+    // model: "deepseek-coder-v2:lite",
     prompt: message,
     stream: false,
-    format: 'json'
+    format: 'json',
+    options: {
+      "num_ctx": 4096
+    }
   }
 
   const aiResponse = await fetch(aiURL, {

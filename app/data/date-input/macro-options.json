@@ -61,7 +61,7 @@
                 "name": "classes",
                 "type": "string",
                 "required": false,
-                "description": "Classes to add to date input item.",
+                "description": "Classes to add to date input item, for example govuk-input--width-2 for day or month, govuk-input--width-4 for years",
                 "advanced": true
             },
             {
