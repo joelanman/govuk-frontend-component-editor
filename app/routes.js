@@ -3,6 +3,7 @@ const url = require('url')
 const express = require('express')
 const router = express.Router()
 
+const GEMINI_KEY = process.env.GDS_GEMINI_KEY
 
 const componentNameToMacroName = componentName => {
   const macroName = componentName
@@ -277,31 +278,51 @@ router.post('/components/ai/:name', async function (request, response) {
 
   console.log(message)
 
-  const aiURL = 'http://localhost:11434/api/generate'
+  // const aiURL = 'http://localhost:11434/api/generate'
+  const aiURL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`
   
+  // aiData = {
+  //   model: "mistral-small:24b",
+  //   // model: "deepseek-r1:14b",
+  //   // model: "gemma3:12b",
+  //   // model: "deepseek-coder-v2:lite",
+  //   prompt: message,
+  //   stream: false,
+  //   format: 'json',
+  //   options: {
+  //     "num_ctx": 4096
+  //   }
+  // }
+
   aiData = {
-    model: "mistral-small:24b",
-    // model: "deepseek-r1:14b",
-    // model: "gemma3:12b",
-    // model: "deepseek-coder-v2:lite",
-    prompt: message,
-    stream: false,
-    format: 'json',
-    options: {
-      "num_ctx": 4096
-    }
+    "contents": [{
+      "parts":[{
+        "text": message
+      }]
+    }],
+    "generationConfig": { "response_mime_type": "application/json" }
   }
 
   const aiResponse = await fetch(aiURL, {
     method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
     body: JSON.stringify(aiData)
   })
 
+  console.dir(aiResponse)
+
   const aiResponseJSON = await aiResponse.json()
 
-  console.log(aiResponseJSON.response)
+  // console.log(aiResponseJSON.response)
+  
+  const content = aiResponseJSON.candidates?.[0]?.content?.parts?.[0]?.text
+  console.log('Content:', content)
 
-  const parsed = JSON.parse(aiResponseJSON.response)
+  // const parsed = JSON.parse(aiResponseJSON.response)
+  const parsed = JSON.parse(content)
 
   request.session.data[componentName] = parsed
   response.locals.data[componentName] = parsed
