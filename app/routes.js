@@ -271,7 +271,7 @@ router.post('/components/ai/:name', async function (request, response) {
   User's request: "${prompt}"
   
   Generate a JSON object with the configuration for this component based on the user's request.
-  Default isPageHeading to true unless specified.
+  Default isPageHeading to true unless specified, and apply the correct class as follows:
   If isPageHeading is true set the main legend classes to 'govuk-fieldset__legend--l' for legend or 'govuk-label--l' for label
   Prefer the text parameter over html
   `

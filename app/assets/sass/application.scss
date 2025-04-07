@@ -20,6 +20,10 @@ $govuk-assets-path: '/govuk/assets/';
 
 // Add extra styles here, or re-organise the Sass files in whichever way makes most sense to you
 
+.govuk-main-wrapper--auto-spacing:first-child, .govuk-main-wrapper--l {
+  padding-top: 20px;
+}
+
 .govuk-template {
   background-color: #ffffff;
 }
@@ -35,6 +39,7 @@ $govuk-assets-path: '/govuk/assets/';
     .inner{
         border: 5px solid govuk-colour("mid-grey");
         padding: 20px;
+        min-height: 100px;
     }
 }
 .code{
@@ -49,6 +54,31 @@ pre {
     border: 1px solid $govuk-border-colour;
     font-size: 16px;
     @include govuk-responsive-margin(4, "bottom");
+}
+
+.app-\!-font {
+  font-family: Helvetica, Arial, sans-serif !important;
+}
+
+.app-sidebar-layout {
+  display: flex;
+}
+
+.app-sidebar {
+  padding-right: 20px;
+  border-right: 1px solid govuk-colour(mid-grey);
+  margin-right: 20px;
+}
+
+.app-sidebar a {
+  text-decoration: none;
+  padding: 5px 0;
+  display: block;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.app-sidebar-content {
+  flex: 1;
 }
 
 // Example styles
