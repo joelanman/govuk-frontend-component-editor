@@ -60,16 +60,6 @@ pre {
   font-family: Helvetica, Arial, sans-serif !important;
 }
 
-.app-sidebar-layout {
-  display: flex;
-}
-
-.app-sidebar {
-  padding-right: 20px;
-  border-right: 1px solid govuk-colour(mid-grey);
-  margin-right: 20px;
-}
-
 .app-sidebar a {
   text-decoration: none;
   padding: 5px 0;
@@ -347,6 +337,36 @@ pre {
   .app-list-remove{
     float: right;
     font-size: 16px;
+  }
+
+}
+
+.app-mobile-hidden {
+  display: none;
+}
+
+@media (min-width: 460px) {
+
+  .app-mobile-hidden {
+    display: block;
+  }
+
+  .app-sidebar-layout {
+    display: flex;
+  }
+
+  .app-sidebar-button {
+    display: none;
+  }
+
+  .app-sidebar {
+    padding-right: 20px;
+    border-right: 1px solid govuk-colour(mid-grey);
+    margin-right: 20px;
+  }
+
+  .app-sidebar {
+    display: block;
   }
 
 }

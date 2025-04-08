@@ -7,8 +7,11 @@
 {% block content %}
 
 <form action="" method="post">
+    <button type="button" class="govuk-button govuk-button--secondary app-sidebar-button app-toggle-button" data-for="sidebar">
+        Components
+    </button>
     <div class="app-sidebar-layout">
-        <div class="app-sidebar">
+        <div class="app-sidebar app-mobile-hidden" id="sidebar">
             <ul class="govuk-list govuk-body-s">
                 <li>
                     <a href="/components/ai/accordion">
@@ -127,87 +130,111 @@
                 </li>
             </ul>
         </div>
+
         <div class="app-sidebar-content">
-        <div class="govuk-grid-row">
+            <div class="govuk-grid-row">
 
-            <div class="govuk-grid-column-full">
-                <h1 class="govuk-heading-l app-!-font">
-                    {{ name|capitalize }}
-                </h1>
+                <div class="govuk-grid-column-full">
+                    <h1 class="govuk-heading-l app-!-font">
+                        {{ name|capitalize }}
+                    </h1>
+                </div>
             </div>
-        </div>
-        <div class="govuk-grid-row">
-            
-            <div class="govuk-grid-column-one-half">
 
-                <div class="govuk-form-group">
-                    {{ govukTextarea({
-                        name: 'prompt',
-                        rows: 4,
-                        value: data['prompt'],
-                        label: {
-                            text: "Prompt",
-                            classes: "govuk-label--s govuk-!-margin-bottom-4 app-!-font"
-                        },
-                        classes: "app-!-font"
-                    })}}
-                </div>
+            <div class="govuk-grid-row">
+                
+                <div class="govuk-grid-column-one-half">
 
-                <div>
-                    {{ govukButton({
-                        text: 'Update'
-                    })}}
-                </div>
-                </div>
-
-            <div class="govuk-grid-column-one-half">
-            
-                <div class="preview">
-
-                    <h2 class="govuk-heading-s app-!-font">
-                        Preview
-                    </h2>
-
-                    <div class="inner">
-                        
-                        {% if data[componentName] %}
-                        {{ getContext(macroName)(data[componentName]) }}
-
-                            <div class="app-example-wrapper" id="{{ exampleId }}" data-module="app-tabs">
-                            <ul class="app-tabs" role="tablist">
-                                <li class="app-tabs__item js-tabs__item{{ " js-tabs__item--open" if (params.open) }}" role="presentation"><a href="#{{ exampleId }}-html" role="tab" aria-controls="{{ exampleId }}-html" data-track="tab-html">HTML</a></li>
-                                <li class="app-tabs__item js-tabs__item" role="presentation"><a href="#{{ exampleId }}-nunjucks" role="tab" aria-controls="{{ exampleId }}-nunjucks" data-track="tab-nunjucks">Nunjucks</a></li>
-                            </ul>
-                            
-                            <div class="app-tabs__heading js-tabs__heading{{ " js-tabs__heading--open" if (params.open) }}"><a href="#{{ exampleId }}-html" role="tab" aria-controls="{{ exampleId }}-html" data-track="tab-html">HTML</a></div>
-                            <div class="app-tabs__container js-tabs__container{{ " js-tabs__container--no-tabs" if (params.hideTab) }}" id="{{ exampleId }}-html" role="tabpanel">
-                                <div class="app-example__code">
-                                <pre data-module="app-copy" tabindex="0"><code class="hljs html">
-                                    {{- getContext(macroName)(data[componentName])|forceescape -}}
-                                </code></pre>
-                                </div>
-                            </div>
-                            
-                            <div class="app-tabs__heading js-tabs__heading"><a href="#{{ exampleId }}-nunjucks" role="tab" aria-controls="{{ exampleId }}-nunjucks" data-track="tab-nunjucks">Nunjucks</a></div>
-                            
-                            <div class="app-tabs__container js-tabs__container{{ " js-tabs__container--no-tabs" if (params.hideTab) }}" id="{{ exampleId }}-nunjucks" role="tabpanel">
-                            
-                                <div class="app-example__code">
-                                <pre data-module="app-copy" tabindex="0"><code class="hljs js">
-        {{macroName}}({{data[componentName]|renderJSON}})
-                                </code></pre>
-                                </div>
-                            </div>
-                            
-                            </div>
-                        
+                    <div class="govuk-form-group">
+                        {{ govukTextarea({
+                            name: 'prompt',
+                            rows: 4,
+                            value: data['prompt'],
+                            label: {
+                                text: "Prompt",
+                                classes: "govuk-label--s govuk-!-margin-bottom-4 app-!-font"
+                            },
+                            classes: "app-!-font"
+                        })}}
                     </div>
 
-                {% endif %}
+                    <div>
+                        {{ govukButton({
+                            text: 'Update'
+                        })}}
+                    </div>
+                </div>
+
+                <div class="govuk-grid-column-one-half">
+                
+                    <div class="preview">
+
+                        <h2 class="govuk-heading-s app-!-font">
+                            Preview
+                        </h2>
+
+                        <div class="inner">
+                            
+                            {% if data[componentName] %}
+                            {{ getContext(macroName)(data[componentName]) }}
+
+                                <div class="app-example-wrapper" id="{{ exampleId }}" data-module="app-tabs">
+                                <ul class="app-tabs" role="tablist">
+                                    <li class="app-tabs__item js-tabs__item{{ " js-tabs__item--open" if (params.open) }}" role="presentation"><a href="#{{ exampleId }}-html" role="tab" aria-controls="{{ exampleId }}-html" data-track="tab-html">HTML</a></li>
+                                    <li class="app-tabs__item js-tabs__item" role="presentation"><a href="#{{ exampleId }}-nunjucks" role="tab" aria-controls="{{ exampleId }}-nunjucks" data-track="tab-nunjucks">Nunjucks</a></li>
+                                </ul>
+                                
+                                <div class="app-tabs__heading js-tabs__heading{{ " js-tabs__heading--open" if (params.open) }}"><a href="#{{ exampleId }}-html" role="tab" aria-controls="{{ exampleId }}-html" data-track="tab-html">HTML</a></div>
+                                <div class="app-tabs__container js-tabs__container{{ " js-tabs__container--no-tabs" if (params.hideTab) }}" id="{{ exampleId }}-html" role="tabpanel">
+                                    <div class="app-example__code">
+                                    <pre data-module="app-copy" tabindex="0"><code class="hljs html">
+{{- getContext(macroName)(data[componentName])|forceescape -}}
+                                    </code></pre>
+                                    </div>
+                                </div>
+                                
+                                <div class="app-tabs__heading js-tabs__heading"><a href="#{{ exampleId }}-nunjucks" role="tab" aria-controls="{{ exampleId }}-nunjucks" data-track="tab-nunjucks">Nunjucks</a></div>
+                                
+                                <div class="app-tabs__container js-tabs__container{{ " js-tabs__container--no-tabs" if (params.hideTab) }}" id="{{ exampleId }}-nunjucks" role="tabpanel">
+                                
+                                    <div class="app-example__code">
+                                    <pre data-module="app-copy" tabindex="0"><code class="hljs js">
+            {{macroName}}({{data[componentName]|renderJSON}})
+                                    </code></pre>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+
+                    {% endif %}
+            </div>
         </div>
     </div>
-</div>
 
 </form>
+
+{% endblock %}
+
+{% block pageScripts %}
+
+    <script>
+        const $toggleButtons = document.querySelectorAll('.app-toggle-button');
+
+        $toggleButtons.forEach($button => {
+            $button.addEventListener('click', function() {
+                const divId = this.getAttribute('data-for')
+                const div = document.getElementById(divId)
+
+                if (div) {
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true'
+                    this.setAttribute('aria-expanded', !isExpanded)
+                    div.classList.toggle('app-mobile-hidden')
+                }
+            })
+        })
+
+    </script>
 
 {% endblock %}
