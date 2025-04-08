@@ -303,31 +303,47 @@ router.post('/components/ai/:name', async function (request, response) {
     "generationConfig": { "response_mime_type": "application/json" }
   }
 
-  const aiResponse = await fetch(aiURL, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify(aiData)
-  })
+  let aiResponse
+  let aiResponseJSON
 
-  console.dir(aiResponse)
+  try {
+    aiResponse = await fetch(aiURL, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(aiData)
+    })
 
-  const aiResponseJSON = await aiResponse.json()
+    // Check if the response was successful
+    if (!aiResponse.ok) {
+      throw new Error(`HTTP error, status: ${aiResponse.status}`)
+    }
 
-  // console.log(aiResponseJSON.response)
-  
-  const content = aiResponseJSON.candidates?.[0]?.content?.parts?.[0]?.text
-  console.log('Content:', content)
+    // Process the successful response
+    aiResponseJSON = await aiResponse.json()
 
-  // const parsed = JSON.parse(aiResponseJSON.response)
-  const parsed = JSON.parse(content)
+    // Process the data only if we successfully got a response
+    const content = aiResponseJSON.candidates?.[0]?.content?.parts?.[0]?.text
+    console.log('Content:', content)
 
-  request.session.data[componentName] = parsed
-  response.locals.data[componentName] = parsed
+    if (!content) {
+      throw new Error('Invalid response format: content not found in response')
+    }
 
-  response.redirect('/components/ai/' + componentName)
+    const parsed = JSON.parse(content)
+    request.session.data[componentName] = parsed
+    response.redirect('/components/ai/' + componentName)
+
+  } catch (error) {
+    // Handle any errors that occurred
+    console.error('Error:', error.message)
+    // Redirect to an error page or render an error message
+    response.status(500).send(`Error processing AI response: ${error.message}`)
+    // Or alternatively:
+    // response.redirect('/error-page?message=' + encodeURIComponent(error.message))
+  }
 
 })
 
